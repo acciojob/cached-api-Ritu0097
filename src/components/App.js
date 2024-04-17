@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import './App.css';
 
 const App = () => {
   const [posts, setPosts] = useState([]);
