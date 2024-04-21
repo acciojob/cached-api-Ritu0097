@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-
+import 'regenerator-runtime/runtime';
 const App = () => {
 	const [data, setData] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
