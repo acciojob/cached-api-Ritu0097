@@ -40,7 +40,7 @@ const App = () => {
 			<h2>Fetched Data</h2>
 			<ul>
 				{data.map((item) => (
-					<li key={item.id}>{item.title}</li>
+					<h4 key={item.id}>{item.title}</h4>
 				))}
 			</ul>
 		</div>
