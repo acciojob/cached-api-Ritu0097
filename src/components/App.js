@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import 'regenerator-runtime/runtime';
+import 'regenerator-runtime/runtime'
+
 const App = () => {
 	const [data, setData] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
@@ -22,10 +23,11 @@ const App = () => {
 		}
 
 		return fetchDataFromAPI
-	}, []) 
+	}, [])
+
 	useEffect(() => {
 		fetchData()
-	}, []) 
+	}, [])
 
 	if (isLoading) {
 		return <div>Loading...</div>
@@ -40,7 +42,10 @@ const App = () => {
 			<h2>Fetched Data</h2>
 			<ul>
 				{data.map((item) => (
-					<h4 key={item.id}>{item.title}</h4>
+					<li key={item.id}>
+						<h4>{item.title}</h4>
+						<p>{item.body}</p>
+					</li>
 				))}
 			</ul>
 		</div>
