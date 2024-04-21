@@ -1,57 +1,50 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react'
 
 const App = () => {
-  const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+	const [data, setData] = useState([])
+	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState(null)
 
-  const fetchPosts = useMemo(() => {
-    const abortController = new AbortController();
+	const fetchData = useMemo(() => {
+		const fetchDataFromAPI = async () => {
+			setIsLoading(true)
+			try {
+				const response = await fetch(
+					'https://jsonplaceholder.typicode.com/posts'
+				)
+				const data = await response.json()
+				setData(data)
+			} catch (error) {
+				setError(error)
+			} finally {
+				setIsLoading(false)
+			}
+		}
 
-    const fetchData = async () => {
-      setIsLoading(true);
+		return fetchDataFromAPI
+	}, []) 
+	useEffect(() => {
+		fetchData()
+	}, []) 
 
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-          signal: abortController.signal,
-        });
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          console.error('Error fetching posts:', error);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
+	if (isLoading) {
+		return <div>Loading...</div>
+	}
 
-    return fetchData;
-  }, []);
+	if (error) {
+		return <div>Error: {error.message}</div>
+	}
 
-  useEffect(() => {
-    fetchPosts();
+	return (
+		<div>
+			<h2>Fetched Data</h2>
+			<ul>
+				{data.map((item) => (
+					<li key={item.id}>{item.title}</li>
+				))}
+			</ul>
+		</div>
+	)
+}
 
-    return () => {
-      abortController.abort();
-    };
-  }, [fetchPosts]);
-
-  return (
-    <div className="app-container">
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <ul className="post-list">
-          {posts.map((post) => (
-            <li key={post.id} className="post-item">
-              <h3 className="post-title">{post.title}</h3>
-              <p className="post-body">{post.body}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
-
-export default App;
+export default App
